@@ -1,0 +1,20 @@
+{
+  "name": "wdw_wait_times",
+  "version": "1.0.0",
+  "description": "Track Ride Wait Times at WDW",
+  "author": "Scott Eppler <audioboxer217@gmail.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:debug": "cd /Users/scott/Projects/personal/wdw_wait_times/src && node server.js debug",
+    "update_db": "node update_db.js",
+    "update_db:debug": "cd /Users/scott/Projects/personal/wdw_wait_times/src && node update_db.js debug"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "express-handlebars": "^5.2.0",
+    "moment-timezone": "~0.5",
+    "sqlite3": "~5.0",
+    "themeparks": "~5.1"
+  }
+}
