@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owasso-covid-frontend
+  namespace: owasso-covid
+  labels:
+    app: owasso-covid
+    use: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: owasso-covid
+      use: frontend
+  template:
+    metadata:
+      labels:
+        app: owasso-covid
+        use: frontend
+    spec:
+      nodeSelector:
+        disktype: ssd
+      containers:
+      - name: owasso-covid-frontend
+        image: seppler/owasso-covid-frontend:2.0.2
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        volumeMounts:
+        - name: db
+          mountPath: /db
+          readOnly: True
+      volumes:
+      - name: db
+        persistentVolumeClaim:
+          claimName: owasso-covid-db

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wdw-wait-times-db
+  namespace: wdw-wait-times
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  storageClassName: local
+  resources:
+    requests:
+      storage: 1Gi
+  selector:
+    matchLabels:
+      app: wdw-wait-times
+      use: db

@@ -1,0 +1,24 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-wdw-db
+  namespace: wdw-wait-times
+spec:
+  schedule: "30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          nodeSelector:
+            disktype: ssd
+          containers:
+          - name: update-wdw-db
+            image: seppler/wdw-wait-times_db:1.0.0
+            volumeMounts:
+            - name: db
+              mountPath: /db
+          restartPolicy: OnFailure
+          volumes:
+          - name: db
+            persistentVolumeClaim:
+              claimName: wdw-wait-times-db

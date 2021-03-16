@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+  name: owasso-covid
+  namespace: owasso-covid
+spec:
+  rules:
+  - host: raspberrypi
+    http:
+      paths:
+      - backend:
+          service:
+            name: owasso-covid
+            port: 
+              number: 3001
+        path: /owasso-covid
+        pathType: Prefix
+  - host: audioboxer.onthewifi.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: owasso-covid
+            port: 
+              number: 3001
+        path: /owasso-covid
+        pathType: Prefix
