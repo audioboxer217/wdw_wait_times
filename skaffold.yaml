@@ -1,0 +1,49 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+metadata:
+  name: wdw-wait-times
+profiles:
+- name: amd64
+  build:
+    artifacts:
+    # - image: seppler/wdw-wait-times-frontend
+    #   docker:
+    #     dockerfile: frontend.Dockerfile
+    - image: seppler/wdw-wait-times-update_db
+      docker:
+        dockerfile: cronjob.Dockerfile
+- name: arm7
+  build:
+    artifacts:
+    # - image: seppler/wdw-wait-times-frontend
+    #   custom:
+    #     buildCommand: docker buildx build -f frontend.Dockerfile --platform linux/arm/v7 --tag $IMAGE --push $BUILD_CONTEXT
+    - image: seppler/wdw-wait-times-update_db
+      custom:
+        buildCommand: docker buildx build -f cronjob.Dockerfile --platform linux/arm/v7 --tag $IMAGE --push $BUILD_CONTEXT
+- name: arm64
+  build:
+    artifacts:
+    # - image: seppler/wdw-wait-times-frontend
+    #   custom:
+    #     buildCommand: docker buildx build -f frontend.Dockerfile --platform linux/arm64 --tag $IMAGE --push $BUILD_CONTEXT
+    - image: seppler/wdw-wait-times-update_db
+      custom:
+        buildCommand: docker buildx build -f cronjob.Dockerfile --platform linux/arm64 --tag $IMAGE --push $BUILD_CONTEXT
+build:
+  artifacts:
+  # - image: seppler/wdw-wait-times-frontend
+  #   custom:
+  #     buildCommand: docker buildx build -f frontend.Dockerfile --platform linux/amd64,linux/arm/v7,linux/arm64 --tag $IMAGE --push $BUILD_CONTEXT
+  - image: seppler/wdw-wait-times-update_db
+    custom:
+      buildCommand: docker buildx build -f cronjob.Dockerfile --platform linux/amd64,linux/arm/v7,linux/arm64 --tag $IMAGE --push $BUILD_CONTEXT
+deploy:
+  kubectl:
+    manifests:
+    - k8s/cronjob.yaml
+    # - k8s/frontend.yaml
+    # - k8s/ingress.yaml
+    - k8s/pv.yaml
+    - k8s/pvc.yaml
+    # - k8s/service.yaml
